@@ -3,11 +3,14 @@
       <h3>
         К сожалению, произошла ошибка, попробуйте еще раз
       </h3>
-    <button class="filter__submit button button--primery btn-error"
+    <router-link
+            :to="{name: 'main'}"
+            tag="button"
+            class="filter__submit button button--primery btn-error"
             type="submit"
             @click="loadProductsRepeat"
     > Повторить
-    </button>
+    </router-link>
   </div>
 </template>
 

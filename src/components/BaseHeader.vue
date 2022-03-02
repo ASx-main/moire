@@ -22,7 +22,8 @@
         8 800 600 90 09
       </a>
 
-      <a class="header__cart"
+      <a v-if="$store.state.cart.basketsProducts"
+        class="header__cart"
          aria-label="Корзина с товарами"
          href="#"
       >
@@ -34,12 +35,24 @@
         <span class="header__count"
               aria-label="Количество товаров"
         >
-          3
+          {{ countProducts }}
         </span>
       </a>
     </div>
   </header>
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters({
+      countProducts: 'cart/countProductToBasket',
+    }),
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .header-link {

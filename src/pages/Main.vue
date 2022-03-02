@@ -12,10 +12,10 @@
           Вывести количество товаров на странице по
           <select @change="onSelect($event)"
                   class="select"
+                  autofocus
           >
             <option :value="productPerPage"
-                    autofocus
-            > -
+            > --
             </option>
             <option v-for="countPerPage in selectCountPerPages"
                     :value="countPerPage"
@@ -50,7 +50,7 @@
       <section class="catalog">
           <LoadPreload v-if="preload"/>
           <LoadError v-else-if="errorLoad"/>
-          <ProductCard
+          <ProductList
             v-if="products"
             :products="products"
           />
@@ -74,7 +74,7 @@ import {
   mapActions, mapState, mapMutations,
 } from 'vuex';
 import numberFormat from '@/helpers/numberFormat';
-import ProductCard from '@/components/main/ProductCard.vue';
+import ProductList from '@/components/main/ProductList.vue';
 import FormFilter from '@/components/main/FormFilter.vue';
 import BasePagination from '@/components/baseDetails/BasePagination.vue';
 import LoadPreload from '@/components/baseDetails/LoadPreload.vue';
@@ -92,7 +92,7 @@ export default {
     LoadPreload,
     BasePagination,
     FormFilter,
-    ProductCard,
+    ProductList,
   },
   created() {
     this.loadProductList();
@@ -114,6 +114,7 @@ export default {
       preload: (state) => state.main.productsLoading,
       errorLoad: (state) => state.main.productLoadingFailed,
       selectCountPerPages: (state) => state.main.selectCountPerPage,
+
     }),
   },
   methods: {

@@ -4,13 +4,14 @@
         v-for="(product, index) in products"
         :key="product.id"
     >
-      <a class="catalog__pic"
-         href="#"
+      <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }"
+                    class="catalog__pic"
+                    href=""
       >
         <img :src="currentColor[index].gallery && currentColor[index].gallery[0].file.url"
              :alt="product.title"
         >
-      </a>
+      </router-link>
 
       <h3 class="catalog__title">
         <a href="#">
@@ -40,11 +41,13 @@
           </label>
         </li>
       </ul>
-      <button class="button button--second button-cart"
-              type="button"
-      >
-        В корзину
-      </button>
+<!--      <router-link :to="{ name: 'ProductDetail', params: { id : product.id }}"-->
+<!--              class="button button&#45;&#45;second button-cart"-->
+<!--              type="button"-->
+<!--              tag="button"-->
+<!--      >-->
+<!--        В корзину-->
+<!--      </router-link>-->
     </li>
   </ul>
 </template>

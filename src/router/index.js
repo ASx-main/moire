@@ -9,6 +9,16 @@ const routes = [
     path: '/',
     component: () => import('@/pages/Main.vue'),
   },
+  {
+    name: 'ProductDetail',
+    path: '/product-detail/:id',
+    component: () => import('@/pages/ProductDetail.vue'),
+  },
+  {
+    name: 'basket',
+    path: '/basket',
+    component: () => import('@/pages/Basket.vue'),
+  },
 ];
 
 const router = new VueRouter({
