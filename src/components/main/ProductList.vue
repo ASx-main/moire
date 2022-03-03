@@ -41,13 +41,6 @@
           </label>
         </li>
       </ul>
-<!--      <router-link :to="{ name: 'ProductDetail', params: { id : product.id }}"-->
-<!--              class="button button&#45;&#45;second button-cart"-->
-<!--              type="button"-->
-<!--              tag="button"-->
-<!--      >-->
-<!--        В корзину-->
-<!--      </router-link>-->
     </li>
   </ul>
 </template>

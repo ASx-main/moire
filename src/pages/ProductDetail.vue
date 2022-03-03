@@ -63,12 +63,7 @@
             <form class="form"
                   action="#"
                   method="POST"
-                  @submit.prevent="addProduct({
-                    productId: product.id,
-                    colorId: currentColor.color.id,
-                    sizeId: checkedSize,
-                    quantity
-                  })"
+                  @submit.prevent="addProductToCart"
             >
               <div class="item__row item__row--center">
                 <AddSub :quantity="quantity"
@@ -125,12 +120,12 @@
               </div>
               <LoadError v-show="errorAdd"/>
 
-              <div v-show="productAdded">
+              <div v-show="productAdd">
                 <h3>
                   Товар добавлен в корзину
                 </h3>
               </div>
-              <div v-show="productAddedSending"
+              <div v-show="productAddSending"
                    class="add-product-to-cart">
                 <h3>
                   Добавляем товар в корзину...
@@ -140,7 +135,7 @@
 
               <button class="item__button button button--primery"
                       type="submit"
-                      :disabled="checkedSize === null || errorAdd"
+                      :disabled="checkedSize === null || errorAdd || productAdd"
               >
                 Добавить в корзину
               </button>
@@ -199,7 +194,7 @@
 
 <script>
 
-import { mapActions, mapState, mapMutations } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import numberFormat from '@/helpers/numberFormat';
 import LoadError from '@/components/baseDetails/LoadError.vue';
 import LoadPreload from '@/components/baseDetails/LoadPreload.vue';
@@ -210,8 +205,13 @@ export default {
   data() {
     return {
       checkedSize: null,
+      quantity: 1,
       errorImg: 'http://era74.ru/media/catalog/2019/08/06/no-photo_94BoRIW.png',
       currentColor: null,
+      productAdd: false,
+      productAddSending: false,
+      errorAdd: false,
+      buttonGoToBasket: false,
     };
   },
   computed: {
@@ -219,11 +219,6 @@ export default {
       productData: (state) => state.cart.productData,
       preload: (state) => state.cart.preload,
       errorLoad: (state) => state.cart.errorLoad,
-      quantity: (state) => state.cart.quantity,
-      productAdded: (state) => state.cart.productAdd,
-      productAddedSending: (state) => state.cart.productAddSending,
-      buttonGoToBasket: (state) => state.cart.buttonGoToBasket,
-      errorAdd: (state) => state.cart.errorAdd,
     }),
     product() {
       return this.productData ? this.productData : {};
@@ -254,14 +249,32 @@ export default {
       loadCart: 'cart/loadCart',
       addProduct: 'cart/addProduct',
     }),
-    ...mapMutations({
-      updateQuantity: 'cart/updateQuantity',
-    }),
     setSelectedColor(color) {
       this.currentColor = color;
     },
     checkedSizes(e) {
-      this.$emit('checkedSizes', this.checkedSize = e.target.value);
+      this.$emit('checkedSizes', this.checkedSize = Number(e.target.value));
+    },
+    updateQuantity(e) {
+      this.$emit('input', this.quantity = e);
+    },
+    addProductToCart() {
+      this.productAdd = false;
+      this.productAddSending = true;
+      this.addProduct({
+        productId: this.product.id,
+        colorId: this.currentColor.color.id,
+        sizeId: this.checkedSize,
+        quantity: this.quantity,
+      })
+        .then(() => {
+          this.productAdd = true;
+          this.productAddSending = false;
+          this.buttonGoToBasket = true;
+        })
+        .catch(() => {
+          this.errorAdd = true;
+        });
     },
   },
   created() {

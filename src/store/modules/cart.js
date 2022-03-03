@@ -5,33 +5,14 @@ export default {
   namespaced: true,
   state() {
     return {
-      quantity: 1,
       preload: false,
       errorLoad: true,
-      productAdd: false,
-      productAddSending: false,
       basketsProducts: null,
       userAccessKey: null,
       productData: null,
-      buttonGoToBasket: false,
-      errorAdd: false,
     };
   },
   mutations: {
-    updateProductAddSendingOn(state) {
-      state.productAdd = false;
-      state.productAddSending = true;
-    },
-    updateProductAddSendingOff(state) {
-      state.productAdd = true;
-      state.productAddSending = false;
-      state.buttonGoToBasket = true;
-    },
-    updateErrorAdd(state) {
-      state.errorAdd = true;
-      state.productAddSending = false;
-      state.productAdd = false;
-    },
     updateBasketsProducts(state, products) {
       state.basketsProducts = products;
     },
@@ -50,9 +31,6 @@ export default {
     },
     updateLoadErrorLoadOn(state) {
       state.errorLoad = true;
-    },
-    updateQuantity(state, payload) {
-      state.quantity = payload;
     },
   },
   getters: {
@@ -106,10 +84,9 @@ export default {
     async addProduct(context, {
       productId, colorId, sizeId, quantity,
     }) {
-      context.commit('updateProductAddSendingOn');
       try {
         const response = await axios
-          .post(`${API_BASE_URL}api/baskets/products1`, {
+          .post(`${API_BASE_URL}api/baskets/products`, {
             colorId,
             productId,
             sizeId,
@@ -120,9 +97,8 @@ export default {
             },
           });
         context.commit('updateBasketsProducts', response.data.items);
-        context.commit('updateProductAddSendingOff');
       } catch (e) {
-        context.commit('updateErrorAdd');
+        console.log({ e });
       }
     },
   },
