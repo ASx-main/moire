@@ -118,7 +118,7 @@
                   </label>
                 </fieldset>
               </div>
-              <LoadError v-show="errorAdd"/>
+              <LoadError v-if="errorLoad"/>
 
               <div v-show="productAdd">
                 <h3>
@@ -135,7 +135,7 @@
 
               <button class="item__button button button--primery"
                       type="submit"
-                      :disabled="checkedSize === null || errorAdd || productAdd"
+                      :disabled="checkedSize === null || productAdd || errorLoad"
               >
                 Добавить в корзину
               </button>
@@ -210,15 +210,14 @@ export default {
       currentColor: null,
       productAdd: false,
       productAddSending: false,
-      errorAdd: false,
       buttonGoToBasket: false,
+      errorLoad: false,
     };
   },
   computed: {
     ...mapState({
       productData: (state) => state.cart.productData,
       preload: (state) => state.cart.preload,
-      errorLoad: (state) => state.cart.errorLoad,
     }),
     product() {
       return this.productData ? this.productData : {};
@@ -261,6 +260,7 @@ export default {
     addProductToCart() {
       this.productAdd = false;
       this.productAddSending = true;
+
       this.addProduct({
         productId: this.product.id,
         colorId: this.currentColor.color.id,
@@ -273,7 +273,10 @@ export default {
           this.buttonGoToBasket = true;
         })
         .catch(() => {
-          this.errorAdd = true;
+          this.errorLoad = true;
+          this.productAdd = false;
+          this.buttonGoToBasket = false;
+          this.productAddSending = false;
         });
     },
   },

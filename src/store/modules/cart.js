@@ -29,7 +29,7 @@ export default {
     updateLoadPreloadOff(state) {
       state.preload = false;
     },
-    updateLoadErrorLoadOn(state) {
+    updateLoadErrorOn(state) {
       state.errorLoad = true;
     },
   },
@@ -76,7 +76,7 @@ export default {
           .get(`${API_BASE_URL}api/products/${id}`);
         context.commit('updateProductDate', response.data);
       } catch (e) {
-        context.commit('updateLoadErrorLoadOn');
+        context.commit('updateLoadErrorOn');
       } finally {
         context.commit('updateLoadPreloadOff');
       }
@@ -84,22 +84,18 @@ export default {
     async addProduct(context, {
       productId, colorId, sizeId, quantity,
     }) {
-      try {
-        const response = await axios
-          .post(`${API_BASE_URL}api/baskets/products`, {
-            colorId,
-            productId,
-            sizeId,
-            quantity,
-          }, {
-            params: {
-              userAccessKey: context.state.userAccessKey,
-            },
-          });
-        context.commit('updateBasketsProducts', response.data.items);
-      } catch (e) {
-        console.log({ e });
-      }
+      const response = await axios
+        .post(`${API_BASE_URL}api/baskets/products`, {
+          colorId,
+          productId,
+          sizeId,
+          quantity,
+        }, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        });
+      context.commit('updateBasketsProducts', response.data.items);
     },
   },
 };
