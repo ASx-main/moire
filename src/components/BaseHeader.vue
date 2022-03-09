@@ -22,10 +22,11 @@
         8 800 600 90 09
       </a>
 
-      <a v-if="$store.state.cart.basketsProducts"
-        class="header__cart"
-         aria-label="Корзина с товарами"
-         href="#"
+      <router-link :to="{  name: 'basket' }"
+                   v-if="$store.state.cart.basketsProducts"
+                   class="header__cart"
+                   aria-label="Корзина с товарами"
+                   href="#"
       >
         <img src="../assets/img/svg/Union.svg"
              alt="Корзина"
@@ -37,7 +38,7 @@
         >
           {{ countProducts }}
         </span>
-      </a>
+      </router-link>
     </div>
   </header>
 </template>

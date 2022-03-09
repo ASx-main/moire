@@ -8,27 +8,26 @@
         <div class="form__counter">
           <button type="button"
                   aria-label="Убрать один товар"
-                  @click.prevent="subProduct"
+                  @click.prevent="sub"
           >
             <img src="../../assets/img/svg/sub.svg"
-                 alt="Убрать">
+                 alt="Убрать"
+            >
           </button>
 
           <input type="number"
-                 min="1"
-                 :value="quantity"
+                 v-model.number="localQuantity"
                  name="count"
-                 @input="handlerInput"
           >
 
           <button type="button"
                   aria-label="Добавить один товар"
-                  @click.prevent="addProduct"
+                  @click.prevent="add"
           >
             <img src="../../assets/img/svg/add.svg"
-                 alt="Добавить">
+                 alt="Добавить"
+            >
           </button>
-
         </div>
       </div>
     </form>
@@ -43,18 +42,30 @@ export default {
       default: 1,
     },
   },
+  data() {
+    return {
+      localQuantity: 1,
+    };
+  },
+  watch: {
+    quantity: {
+      immediate: true,
+      handler() {
+        this.localQuantity = Number(this.quantity);
+      },
+    },
+    localQuantity(v) {
+      this.localQuantity = Math.abs(v);
+      this.$emit('input', v);
+    },
+  },
   methods: {
-    handlerInput(e) {
-      this.$emit('input', e.target.value);
+    add() {
+      this.localQuantity += 1;
     },
-    subProduct() {
-      if (this.quantity >= 2) {
-        this.$emit('input', Number(this.quantity) - 1);
-      }
-    },
-    addProduct() {
-      if (this.quantity >= 0) {
-        this.$emit('input', Number(this.quantity) + 1);
+    sub() {
+      if (this.localQuantity > 1) {
+        this.localQuantity -= 1;
       }
     },
   },

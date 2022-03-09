@@ -66,6 +66,7 @@
                   @submit.prevent="addProductToCart"
             >
               <div class="item__row item__row--center">
+
                 <AddSub :quantity="quantity"
                         @input="updateQuantity"
                 />
@@ -135,7 +136,7 @@
 
               <button class="item__button button button--primery"
                       type="submit"
-                      :disabled="checkedSize === null || productAdd || errorLoad"
+                      :disabled="checkedSize === null || errorLoad"
               >
                 Добавить в корзину
               </button>
@@ -255,7 +256,7 @@ export default {
       this.$emit('checkedSizes', this.checkedSize = Number(e.target.value));
     },
     updateQuantity(e) {
-      this.$emit('input', this.quantity = e);
+      this.$emit('input', e);
     },
     addProductToCart() {
       this.productAdd = false;

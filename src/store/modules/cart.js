@@ -10,6 +10,8 @@ export default {
       basketsProducts: null,
       userAccessKey: null,
       productData: null,
+      loadCart: false,
+      loadCartFailed: false,
     };
   },
   mutations: {
@@ -32,10 +34,25 @@ export default {
     updateLoadErrorOn(state) {
       state.errorLoad = true;
     },
+    updateBasketsDelete(state, productId) {
+      state.basketsProducts = state.basketsProducts.filter((item) => item.productId !== productId);
+    },
+    updateLoadCartOn(state) {
+      state.loadCart = true;
+    },
+    updateLoadCartOff(state) {
+      state.loadCart = false;
+    },
+    updateLoadCartFailed(state) {
+      state.loadCartFailed = true;
+    },
   },
   getters: {
     countProductToBasket(state) {
       return state.basketsProducts.reduce((acc, item) => (item.quantity) + acc, 0);
+    },
+    productDetailTotalPrice(state) {
+      return state.basketsProducts.reduce((acc, item) => (item.price * item.quantity) + acc, 0);
     },
   },
   actions: {
@@ -57,6 +74,7 @@ export default {
       }
     },
     async loadCart(context) {
+      context.commit('updateLoadCartOn');
       try {
         const response = await axios
           .get(`${API_BASE_URL}api/baskets`, {
@@ -65,8 +83,9 @@ export default {
             },
           });
         context.commit('updateBasketsProducts', response.data.items);
+        context.commit('updateLoadCartOff');
       } catch (e) {
-        console.log({ e });
+        context.commit('updateLoadCartFailed');
       }
     },
     async loadProduct(context, id) {

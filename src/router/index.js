@@ -19,6 +19,11 @@ const routes = [
     path: '/basket',
     component: () => import('@/pages/Basket.vue'),
   },
+  {
+    name: 'ordering',
+    path: '/ordering',
+    component: () => import('@/pages/Ordering.vue'),
+  },
 ];
 
 const router = new VueRouter({
