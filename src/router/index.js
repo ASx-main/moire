@@ -24,6 +24,11 @@ const routes = [
     path: '/ordering',
     component: () => import('@/pages/Ordering.vue'),
   },
+  {
+    name: 'orderingInfo',
+    path: '/orderingInfo/:id',
+    component: () => import('@/pages/OrderingInfo.vue'),
+  },
 ];
 
 const router = new VueRouter({

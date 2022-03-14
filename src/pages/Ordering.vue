@@ -3,18 +3,20 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link"
-             href="index.html"
+          <router-link :to="{ name: 'main' }"
+                        class="breadcrumbs__link"
+                        href="#"
           >
             Каталог
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link"
-             href="cart.html"
+          <router-link :to="{ name: 'basket' }"
+                       class="breadcrumbs__link"
+                       href="#"
           >
             Корзина
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">
@@ -29,151 +31,137 @@
         </h1>
       </div>
     </div>
+    <LoadPreload v-if="loadPreload"/>
+    <div v-if="loadFormError"
+         class="failed">
+      <h2> Произошла ошибка</h2>
+      <h3 class="error">
+        Заполните необходимые поля
+      </h3>
+    </div>
 
     <section class="cart">
       <form class="cart__form form"
             action="#"
             method="POST"
+            @submit.prevent="createdOrderingInfo"
       >
         <div class="cart__field">
           <div class="cart__data">
-            <label class="form__label">
-              <input class="form__input"
-                     type="text"
-                     name="name"
-                     placeholder="Введите ваше полное имя"
-              >
-              <span class="form__value">ФИО</span>
-            </label>
+            <BaseFormText :title="'ФИО'"
+                          :placeholder="'Введите ваше полное имя'"
+                          :error="formError.name"
+                          v-model="formData.name"
+                          :type="'text'"
+            />
 
-            <label class="form__label">
-              <input class="form__input"
-                     type="text"
-                     name="address"
-                     placeholder="Введите ваш адрес"
-              >
-              <span class="form__value">Адрес доставки</span>
-            </label>
+            <BaseFormText :title="'Адрес доставки'"
+                          :placeholder="'Введите ваш адрес'"
+                          :error="formError.address"
+                          v-model="formData.address"
+                          :type="'text'"
+            />
 
-            <label class="form__label">
-              <input class="form__input" type="tel" name="phone" placeholder="Введите ваш телефон">
-              <span class="form__value">Телефон</span>
-              <span class="form__error">Неверный формат телефона</span>
-            </label>
+            <BaseFormText :title="'Телефон'"
+                          :placeholder="'Введите ваш телефон'"
+                          :error="formError.phone"
+                          v-model="formData.phone"
+                          :type="'tel'"
+            />
 
-            <label class="form__label">
-              <input class="form__input" type="email" name="email" placeholder="Введи ваш Email">
-              <span class="form__value">Email</span>
-            </label>
+            <BaseFormText :title="'Email'"
+                          :placeholder="'Введи ваш Email'"
+                          :error="formError.email"
+                          v-model="formData.email"
+                          :type="'email'"
+            />
 
-            <label class="form__label">
-              <textarea class="form__input form__input--area"
-                        name="comments"
-                        placeholder="Ваши пожелания"
-              >
-              </textarea>
-              <span class="form__value">Комментарий к заказу</span>
-            </label>
+            <BaseFormTextarea :title="'Комментарии к заказу'"
+                              :placeholder="'Ваши пожелания'"
+                              :error="formError.comment"
+                              v-model="formData.comment"
+            />
           </div>
 
-          <div class="cart__options">
-            <h3 class="cart__title">Доставка</h3>
-            <ul class="cart__options options">
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only"
-                         type="radio"
-                         name="delivery"
-                         value="0"
-                         checked=""
-                  >
-                  <span class="options__value">
-                    Самовывоз <b>бесплатно</b>
-                  </span>
-                </label>
-              </li>
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only"
-                         type="radio"
-                         name="delivery"
-                         value="500"
-                  >
-                  <span class="options__value">
-                    Курьером <b>290 ₽</b>
-                  </span>
-                </label>
-              </li>
-            </ul>
+          <DeliveryOrdering/>
 
-            <h3 class="cart__title">Оплата</h3>
-            <ul class="cart__options options">
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only"
-                         type="radio"
-                         name="pay"
-                         value="card"
-                         checked=""
-                  >
-                  <span class="options__value">
-                    Картой при получении
-                  </span>
-                </label>
-              </li>
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only"
-                         type="radio"
-                         name="pay"
-                         value="cash"
-                  >
-                  <span class="options__value">
-                    Наличными при получении
-                  </span>
-                </label>
-              </li>
-            </ul>
-          </div>
+          <DeliveryMethodsOrdering/>
+
         </div>
 
-        <div class="cart__block">
-          <ul class="cart__orders">
-            <li class="cart__order">
-              <h3>Смартфон Xiaomi Redmi Note 7 Pro 6/128GB</h3>
-              <b>990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Гироскутер Razor Hovertrax 2.0ii</h3>
-              <b>1 990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Электрический дрифт-карт Razor Lil’ Crazy</h3>
-              <b>4 090 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-          </ul>
-
-          <div class="cart__total">
-            <p>Доставка: <b>бесплатно</b></p>
-            <p>Итого: <b>3</b> товара на сумму <b>4 070 ₽</b></p>
-          </div>
-
-          <button class="cart__button button button--primery"
-                  type="submit"
-          >
-            Оформить заказ
-          </button>
-        </div>
-        <div class="cart__error form__error-block">
+        <CartDetailBasket :basket-products="basketProducts"
+                          :count-product-to-basket="countProductToBasket"
+                          :product-detail-total-price="productDetailTotalPrice"
+        />
+        <div v-if="errorMessages"
+          class="cart__error form__error-block">
           <h4>Заявка не отправлена!</h4>
           <p>
-            Похоже произошла ошибка. Попробуйте отправить снова или перезагрузите страницу.
+            {{ errorMessages }}
           </p>
         </div>
       </form>
     </section>
   </main>
 </template>
+
+<script>
+import {
+  mapActions, mapGetters, mapState,
+} from 'vuex';
+
+import numberFormat from '@/helpers/numberFormat';
+import CartDetailBasket from '@/components/baseDetails/CartDetailBasket.vue';
+import BaseFormText from '@/components/baseDetails/BaseFormText.vue';
+import BaseFormTextarea from '@/components/baseDetails/BaseFormTextarea.vue';
+import DeliveryOrdering from '@/components/DeliveryOrdering.vue';
+import DeliveryMethodsOrdering from '@/components/DeliveryMethodsOrdering.vue';
+import LoadPreload from '@/components/baseDetails/LoadPreload.vue';
+
+export default {
+  components: {
+    DeliveryMethodsOrdering,
+    DeliveryOrdering,
+    BaseFormTextarea,
+    BaseFormText,
+    CartDetailBasket,
+    LoadPreload,
+  },
+  methods: {
+    numberFormat,
+    ...mapActions({
+      loadDelivery: 'ordering/loadDelivery',
+      loadPaymentsMethods: 'ordering/loadPaymentsMethods',
+      createdOrder: 'ordering/createOrder',
+      loadOrderInfo: 'orderInfo/loadOrderInfo',
+    }),
+    async createdOrderingInfo() {
+      try {
+        await this.createdOrder();
+        await this.$router.push({ name: 'orderingInfo', params: { id: this.orderInfoId } });
+      } catch (e) {
+        console.log(e, 'error');
+      }
+    },
+  },
+  computed: {
+    ...mapGetters({
+      countProductToBasket: 'cart/countProductToBasket',
+      productDetailTotalPrice: 'cart/productDetailTotalPrice',
+    }),
+    ...mapState({
+      basketProducts: (state) => state.cart.basketsProducts,
+      formData: (state) => state.ordering.formData,
+      formError: (state) => state.ordering.formError,
+      orderInfoId: (state) => state.ordering.orderInfoId,
+      loadPreload: (state) => state.ordering.loadPreload,
+      errorMessages: (state) => state.ordering.errorMessages,
+      loadFormError: (state) => state.ordering.loadFormError,
+    }),
+  },
+  created() {
+    this.loadDelivery();
+    this.loadPaymentsMethods();
+  },
+};
+</script>

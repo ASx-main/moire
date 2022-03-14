@@ -39,7 +39,11 @@
             >
           </div>
           <ul class="pics__list">
-            <li class="pics__item" v-for="color in miniColors" :key="color.id">
+            <li class="pics__item"
+                v-for="color in miniColors"
+                :key="color.id"
+                @click="setSelectedColor(color)"
+            >
               <a href="#"
                  class="pics__link pics__link--current"
               >
@@ -82,7 +86,8 @@
                   <ul class="colors colors--black">
                     <li v-for="color in colors"
                         :key="color.id"
-                        class="colors__item">
+                        class="colors__item"
+                    >
                       <label class="colors__label">
                         <input class="colors__radio sr-only"
                                type="radio"

@@ -14,11 +14,6 @@
 <script>
 
 export default {
-  data() {
-    return {
-      currentValue: 0,
-    };
-  },
   props: {
     placeholder: {
       type: String,

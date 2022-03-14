@@ -46,13 +46,16 @@ export default {
     updateLoadCartFailed(state) {
       state.loadCartFailed = true;
     },
+    resetBasket(state) {
+      state.basketsProducts = null;
+    },
   },
   getters: {
     countProductToBasket(state) {
-      return state.basketsProducts.reduce((acc, item) => (item.quantity) + acc, 0);
+      return state.basketsProducts?.reduce((acc, item) => (item.quantity) + acc, 0);
     },
     productDetailTotalPrice(state) {
-      return state.basketsProducts.reduce((acc, item) => (item.price * item.quantity) + acc, 0);
+      return state.basketsProducts?.reduce((acc, item) => (item.price * item.quantity) + acc, 0);
     },
   },
   actions: {
