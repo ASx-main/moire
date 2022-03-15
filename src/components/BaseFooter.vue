@@ -3,11 +3,12 @@
     <div class="footer__wrapper">
       <ul class="footer__links">
         <li>
-          <a class="footer__link"
-             href="#"
+          <router-link :to="{ name: 'main' }"
+                       class="footer__link"
+                       href="#"
           >
             Каталог
-          </a>
+          </router-link>
         </li>
         <li>
           <a class="footer__link"
@@ -20,7 +21,7 @@
           <a class="footer__link"
              href="mailto:hi@technozavrrr.com"
           >
-            hi@technozavrrr.com
+            hi@moire.com
           </a>
         </li>
         <li>
@@ -131,7 +132,7 @@
       </ul>
 
       <span class="footer__copyright">
-        © 2020 Moire
+        © 2022 Moire
       </span>
     </div>
   </footer>

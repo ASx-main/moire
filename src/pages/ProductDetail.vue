@@ -138,7 +138,6 @@
                 </h3>
                 <LoadPreload/>
               </div>
-
               <button class="item__button button button--primery"
                       type="submit"
                       :disabled="checkedSize === null || errorLoad"
@@ -148,10 +147,11 @@
               <router-link
                 :to="{name: 'basket'}"
                 v-if="buttonGoToBasket"
-                class="item__button button button--primery"
+                class="item__button button button--primery btn-link"
               >
                 Перейти в корзину
               </router-link>
+
             </form>
           </div>
         </div>
@@ -291,3 +291,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.btn-link {
+  text-align: center;
+}
+</style>

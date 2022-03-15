@@ -94,18 +94,21 @@
                 class="cart__order"
                 :key="product.id"
             >
-              <h3>{{ product.product.title }}</h3>
-              <p>{{ product.quantity }} шт</p>
-              <b>{{ product.product.price }} ₽</b>
-              <span>Артикул: {{ product.product.id }}</span>
+              <div class="cart_detail_info">
+                <h3>{{ product.product.title }}</h3>
+                <p>{{ product.quantity }} шт</p>
+                <span>Артикул: {{ product.product.id }}</span>
+              </div>
+              <b>{{ product.product.price * product.quantity }} ₽</b>
             </li>
           </ul>
 
           <div class="cart__total">
             <p>Доставка: <b>{{ deliveryType }}</b></p>
-            <p>Итого: <b>{{ countProducts }}</b> товара на сумму <b>
+            <p>Итого: <b>{{ countProducts }}</b> товара на сумму
+              <b>
               {{ orderInfoData.totalPrice }} ₽
-            </b>
+              </b>
             </p>
           </div>
         </div>
@@ -144,3 +147,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.cart_detail_info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+</style>
