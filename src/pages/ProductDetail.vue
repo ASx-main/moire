@@ -113,7 +113,7 @@
                             @change="checkedSizes"
                             autofocus
                     >
-                      <option :value="0">Выберите размер</option>
+                      <option :value="0"> Выберите размер</option>
                       <option v-for="size in sizes"
                               :key="size.id"
                               :value="size.id"
@@ -140,7 +140,7 @@
               </div>
               <button class="item__button button button--primery"
                       type="submit"
-                      :disabled="checkedSize === null || errorLoad"
+                      :disabled="checkedSize === null || checkedSize === 0 ||errorLoad"
               >
                 Добавить в корзину
               </button>
